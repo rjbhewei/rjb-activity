@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="warn">
+    <Properties>
+        <property name="LOG_HOME">./logs</property>
+        <property name="LOG_BACKUP_HOME">./logs/backup/%d{yyyy-MM-dd}</property>
+    </Properties>
+
+    <appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%class{0}:%method:%line] [%t] [-[%msg]-] %n"/>
+        </Console>
+        <!--<Socket name="logCenterAppender" host="logcloud.shuyun.com" port="18888"  reconnectionDelayMillis="1000">-->
+            <!--<PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%class{0}:%method:%line] [%t] [-[%msg]-] %n"/>-->
+        <!--</Socket>-->
+        <!--<RollingFile name="handler" fileName="${LOG_HOME}/handler.log" filePattern="${LOG_BACKUP_HOME}/handler-%d{yyyy_MM_dd}.log.zip">-->
+            <!--<PatternLayout>-->
+                <!--<pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%class{0}:%method:%line] [%t] [-[%msg]-] %n</pattern>-->
+            <!--</PatternLayout>-->
+            <!--<Policies>-->
+                <!--<TimeBasedTriggeringPolicy interval="1" modulate="false"/>-->
+            <!--</Policies>-->
+        <!--</RollingFile>-->
+        <!--<Async name="asyncLogCenterAppender">-->
+            <!--<appender-ref ref="logCenterAppender"/>-->
+        <!--</Async>-->
+    </appenders>
+
+    <loggers>
+        <root level="info">
+            <appender-ref ref="console"/>
+        </root>
+        <!--<logger name="logCenterLogger" level="INFO">-->
+            <!--<appender-ref ref="logCenterAppender"/>-->
+        <!--</logger>-->
+        <!--&lt;!&ndash;异步配置方法,需要结合上面的异步配置&ndash;&gt;-->
+        <!--<asyncLogger name="asyncLogCenterLogger" level="info" additivity="false">-->
+            <!--<appender-ref ref="asyncLogCenterAppender"/>-->
+        <!--</asyncLogger>-->
+    </loggers>
+</configuration>
