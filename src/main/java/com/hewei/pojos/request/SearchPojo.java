@@ -1,5 +1,7 @@
 package com.hewei.pojos.request;
 
+import com.hewei.utils.JsonUtils;
+
 /**
  * 
  * @author hewei
@@ -71,5 +73,17 @@ public class SearchPojo {
 
 	public void setUrlType(String urlType) {
 		this.urlType = urlType;
+	}
+
+	public static void main(String[] args) {
+		SearchPojo pojo=new SearchPojo();
+		pojo.setSearch("");
+		pojo.setEndTime(-1);
+		pojo.setStartTime(-1);
+		pojo.setPage(1);
+		pojo.setPageSize(10);
+		pojo.setUrlType("activityDetails");
+		System.out.println(JsonUtils.toJson(pojo));
+
 	}
 }

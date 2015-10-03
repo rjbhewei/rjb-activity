@@ -1,7 +1,5 @@
 package com.hewei.pojos.response.store;
 
-import java.util.Date;
-
 /**
  *
  * @author hewei
@@ -15,123 +13,73 @@ import java.util.Date;
  */
 public class SearchMessage {
 
-    private String appName;
+	private String title;
 
-    private String appVersion;
+	private String time;//时间
 
-    private String phase;
+	private String location;//地址
 
-    private String env;
+	private String expense;//费用
 
-    private String containerID;
+	private String type;//类型
 
-    private String logPath;
+	private String initiator;//发起人
 
-    private String className;
+	private String initiatorUrl;//发起人
 
-    private String methodName;
+	public String getTitle() {
+		return title;
+	}
 
-    private int lineNum = -1;
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    private String threadName;
+	public String getTime() {
+		return time;
+	}
 
-    private Date storeLogTime;
+	public void setTime(String time) {
+		this.time = time;
+	}
 
-    private String message;
+	public String getLocation() {
+		return location;
+	}
 
-    public String getAppName() {
-        return appName;
-    }
+	public void setLocation(String location) {
+		this.location = location;
+	}
 
-    public void setAppName(String appName) {
-        this.appName = appName;
-    }
+	public String getExpense() {
+		return expense;
+	}
 
-    public String getAppVersion() {
-        return appVersion;
-    }
+	public void setExpense(String expense) {
+		this.expense = expense;
+	}
 
-    public void setAppVersion(String appVersion) {
-        this.appVersion = appVersion;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public String getPhase() {
-        return phase;
-    }
+	public void setType(String type) {
+		this.type = type;
+	}
 
-    public void setPhase(String phase) {
-        this.phase = phase;
-    }
+	public String getInitiator() {
+		return initiator;
+	}
 
-    public String getEnv() {
-        return env;
-    }
+	public void setInitiator(String initiator) {
+		this.initiator = initiator;
+	}
 
-    public void setEnv(String env) {
-        this.env = env;
-    }
+	public String getInitiatorUrl() {
+		return initiatorUrl;
+	}
 
-    public String getContainerID() {
-        return containerID;
-    }
-
-    public void setContainerID(String containerID) {
-        this.containerID = containerID;
-    }
-
-    public String getLogPath() {
-        return logPath;
-    }
-
-    public void setLogPath(String logPath) {
-        this.logPath = logPath;
-    }
-
-    public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
-    }
-
-    public String getMethodName() {
-        return methodName;
-    }
-
-    public void setMethodName(String methodName) {
-        this.methodName = methodName;
-    }
-
-    public int getLineNum() {
-        return lineNum;
-    }
-
-    public void setLineNum(int lineNum) {
-        this.lineNum = lineNum;
-    }
-
-    public String getThreadName() {
-        return threadName;
-    }
-
-    public void setThreadName(String threadName) {
-        this.threadName = threadName;
-    }
-
-    public Date getStoreLogTime() {
-        return storeLogTime;
-    }
-
-    public void setStoreLogTime(Date storeLogTime) {
-        this.storeLogTime = storeLogTime;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
+	public void setInitiatorUrl(String initiatorUrl) {
+		this.initiatorUrl = initiatorUrl;
+	}
 }
