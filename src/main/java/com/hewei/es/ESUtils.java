@@ -1,13 +1,8 @@
 package com.hewei.es;
 
 import com.alibaba.fastjson.JSONObject;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import com.hewei.constants.ESConstants;
-import com.hewei.enums.SearchErr;
-import com.hewei.exception.LogException;
 import com.hewei.pojos.SearchPage;
-import com.hewei.pojos.TimeRanger;
 import com.hewei.pojos.request.SearchPojo;
 import com.hewei.pojos.response.SearchResultImpl;
 import com.hewei.pojos.response.store.SearchMessage;
@@ -29,11 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 
@@ -50,32 +41,13 @@ public class ESUtils extends ES {
 
     private static final Logger logger = LoggerFactory.getLogger(ESUtils.class);
 
-    private static final Cache<String, Boolean> cache = CacheBuilder.newBuilder().maximumSize(31).expireAfterWrite(1, TimeUnit.DAYS).build();
-
-	public static boolean cacheAndCheckIndex(final String indexName) {
-		try {
-			return cache.get(indexName, new Callable<Boolean>() {
-
-				@Override
-				public Boolean call() throws Exception {
-					return existIndex(indexName);
-				}
-			});
-		} catch (ExecutionException e) {
-			logger.error(e.getMessage(), e);
-			throw new LogException(ESConstants.SERVER_ERR);
-		}
-	}
-
     public static SearchResultImpl search(SearchPojo pojo) {
-
-        TimeRanger timeRanger = indices(pojo);
 
         SearchPage searchPage = SearchPage.warpSearchPage(pojo);
 
-        String query = query(timeRanger.wrap(pojo)).buildAsBytes().toUtf8();
+        String query = query(pojo).buildAsBytes().toUtf8();
 
-        SearchRequestBuilder builder = client().prepareSearch(timeRanger.getIndices()).setTypes(Strings.EMPTY_ARRAY).setFrom(searchPage.getStart()).setSize(searchPage.getSize()).setQuery(query).addFields(responseFields());
+        SearchRequestBuilder builder = client().prepareSearch(ESConstants.ES_INDEX_NAME).setTypes(Strings.EMPTY_ARRAY).setFrom(searchPage.getStart()).setSize(searchPage.getSize()).setQuery(query).addFields(responseFields());
 
         if (StringUtils.isNotEmpty(pojo.getSearch())) {
             builder.addHighlightedField(ESConstants.MESSAGE_STR).setHighlighterPreTags(ESConstants.HIGH_LIGHTER_PRE).setHighlighterPostTags(ESConstants.HIGH_LIGHTER_POST).setHighlighterNumOfFragments(0);
@@ -111,50 +83,12 @@ public class ESUtils extends ES {
 
         }
 
-        SearchErr searchErr = timeRanger.getSearchErr() != SearchErr.NO ? timeRanger.getSearchErr() : searchPage.getSearchErr();
-
-        return new SearchResultImpl(searchHits.getTotalHits(), response.getTook().secondsFrac(), searchErr, searchPage.getPage(), searchPage.getSize(), list);
+        return new SearchResultImpl(searchHits.getTotalHits(), response.getTook().secondsFrac(), searchPage.getPage(), searchPage.getSize(), list);
     }
 
     static BoolQueryBuilder query(SearchPojo pojo){
 
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-
-        if (StringUtils.isNotEmpty(pojo.getAppName())) {
-            boolQueryBuilder.must(QueryBuilders.termQuery(ESConstants.APP_NAME_STR, pojo.getAppName()));
-        }
-
-        if (StringUtils.isNotEmpty(pojo.getAppVersion())) {
-            boolQueryBuilder.must(QueryBuilders.termQuery(ESConstants.APP_VERSION_STR, pojo.getAppVersion()));
-        }
-
-        if (StringUtils.isNotEmpty(pojo.getPhase())) {
-            boolQueryBuilder.must(QueryBuilders.termQuery(ESConstants.PHASE_STR, pojo.getPhase()));
-        }
-
-        if (StringUtils.isNotEmpty(pojo.getEnv())) {
-            boolQueryBuilder.must(QueryBuilders.termQuery(ESConstants.ENV_STR, pojo.getEnv()));
-        }
-
-        if (StringUtils.isNotEmpty(pojo.getClassName())) {
-            boolQueryBuilder.must(QueryBuilders.termQuery(ESConstants.CLASS_NAME_STR, pojo.getClassName()));
-        }
-
-        if (StringUtils.isNotEmpty(pojo.getMethodName())) {
-            boolQueryBuilder.must(QueryBuilders.termQuery(ESConstants.METHOD_NAME_STR, pojo.getMethodName()));
-        }
-
-        if (pojo.getLineNum() > 0) {
-            boolQueryBuilder.must(QueryBuilders.termQuery(ESConstants.LINE_NUM_STR, pojo.getLineNum()));
-        }
-
-        if (StringUtils.isNotEmpty(pojo.getThreadName())) {
-            boolQueryBuilder.must(QueryBuilders.termQuery(ESConstants.THREAD_NAME_STR, pojo.getThreadName()));
-        }
-
-        if (StringUtils.isNotEmpty(pojo.getContainerID())) {
-            boolQueryBuilder.must(QueryBuilders.termQuery(ESConstants.CONTAINER_ID_STR, pojo.getContainerID()));
-        }
 
         if (StringUtils.isNotEmpty(pojo.getSearch())) {
             boolQueryBuilder.must(QueryBuilders.queryStringQuery(pojo.getSearch()).field(ESConstants.MESSAGE_STR));
@@ -167,28 +101,6 @@ public class ESUtils extends ES {
         return boolQueryBuilder;
     }
 
-    static TimeRanger indices(SearchPojo pojo) {
-
-        List<String> indexList = new ArrayList<>();
-
-        TimeRanger timeRanger = TimeUtils.timeRanger(pojo.getStartTime(), pojo.getEndTime(), pojo.getSpecificDay());
-
-        logger.info("index check start:{}", Arrays.toString(timeRanger.getIndices()));
-
-        for (String indexName : timeRanger.getIndices()) {
-            if (cacheAndCheckIndex(indexName)) {
-                indexList.add(indexName);
-            }
-        }
-
-        String[] indices = indexList.toArray(new String[indexList.size()]);
-
-        logger.info("index check end:{}", Arrays.toString(indices));
-
-        timeRanger.setIndices(indices);
-
-        return timeRanger;
-    }
 
     static String[] responseFields() {
         return new String[]{ESConstants.APP_NAME_STR, ESConstants.APP_VERSION_STR,

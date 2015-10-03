@@ -67,11 +67,11 @@ public class HttpRequestFilterHandler extends SimpleChannelInboundHandler<HttpRe
 
 		if (cause instanceof LogException) {
 
-			LogException exception = (LogException) cause;
+//			LogException exception = (LogException) cause;
 
 			SearchResultImpl result = new SearchResultImpl();
 
-			result.setErr(exception.getErrDesc());
+//			result.setErr(exception.getErrDesc());
 
 			String responseStr = JsonUtils.toJson(result);
 

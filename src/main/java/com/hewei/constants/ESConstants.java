@@ -15,6 +15,15 @@ import com.hewei.connector.LogInit;
  */
 public class ESConstants {
 
+	public static final String ES_INDEX_NAME = "oschina_index";
+
+
+
+
+
+
+
+
     public static final String PRODECE_SERVER = "nebula-logcenter";
 
     /** ************************************* 配置 ********************************************** */
@@ -40,7 +49,7 @@ public class ESConstants {
 
     public static final String ES_INDEX_TIME_FORMAT = "yyyyMMdd";
 
-    public static final String ES_INDEX_NAME = "log_index";
+//    public static final String ES_INDEX_NAME = "log_index";
 
     public static final String UNDERLINE = "_";
 

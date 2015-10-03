@@ -1,7 +1,6 @@
 package com.hewei.pojos.response;
 
 import com.hewei.constants.ESConstants;
-import com.hewei.enums.SearchErr;
 import com.hewei.pojos.response.store.SearchMessage;
 
 import java.util.List;
@@ -19,8 +18,6 @@ import java.util.List;
  */
 public class SearchResultImpl extends SearchResult {
 
-    private String err = SearchErr.NO.getMessage();
-
     private List<SearchMessage> messages;
 
     private int page = 1;
@@ -30,24 +27,15 @@ public class SearchResultImpl extends SearchResult {
     public SearchResultImpl() {
     }
 
-    public SearchResultImpl(long totalHits, double tookInMillis, SearchErr searchErr, int page, int pageSize, List<SearchMessage> messages) {
+    public SearchResultImpl(long totalHits, double tookInMillis,int page, int pageSize, List<SearchMessage> messages) {
         super(totalHits, tookInMillis);
         this.messages = messages;
         this.page = page;
         this.pageSize = pageSize;
-        this.err = searchErr.getMessage();
     }
 
     public List<SearchMessage> getMessages() {
         return messages;
-    }
-
-    public String getErr() {
-        return err;
-    }
-
-    public void setErr(String err) {
-        this.err = err;
     }
 
     public int getPage() {

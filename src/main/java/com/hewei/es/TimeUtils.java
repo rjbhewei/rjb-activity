@@ -38,23 +38,7 @@ public class TimeUtils {
 
     static DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyyMMdd");
 
-    public static TimeRanger timeRanger(long start, long end, int specificDay) {
-
-        //        long start = DateTime.now().plusDays(1).getMillis();
-        //
-        //        long end = DateTime.now().getMillis();
-
-        if (start > 0 || end > 0) {
-            specificDay = -1;
-        }
-
-        if (specificDay > 0) {
-            if (specificDay > ESConstants.MAX_SEARCH_DAY) {
-                return new TimeRanger(SearchErr.SPECIFIC_DAY_THAN_MAX_DAY, indicesMaxDay());
-            } else {
-                return new TimeRanger(indices(specificDay));
-            }
-        }
+    public static TimeRanger timeRanger(long start, long end) {
 
         TimeLimiter timeLimiter = cacheTimeLimiter();
 

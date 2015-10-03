@@ -75,8 +75,6 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<HttpContent> 
 
 			SearchResultImpl result = new SearchResultImpl();
 
-			result.setErr(exception.getErrDesc());
-
 			String responseStr = JsonUtils.toJson(result);
 
 			logger.info("server error response:{}", responseStr);
