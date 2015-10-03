@@ -17,6 +17,21 @@ public class ESConstants {
 
 	public static final String ES_INDEX_NAME = "oschina_index";
 
+	public static final int DEFAULT_PAGE_START = 0;
+
+	public static final int DEFAULT_PAGE_SIZE = 10;
+
+	public static final int DEFAULT_SEARCH_SIZE = 500;
+
+	public static final String ACTIVITY = "activity";
+
+	public static final String ACTIVITY_DETAILS = "activityDetails";
+
+
+
+
+
+
 
 
 
@@ -57,41 +72,53 @@ public class ESConstants {
 
     public static final int MAX_SEARCH_DAY_WITHOUT_CURRENT = MAX_SEARCH_DAY - 1;//除了当天最大的搜索时间
 
-    public static final int DEFAULT_PAGE_START = 0;
-
-    public static final int DEFAULT_PAGE_SIZE = 20;
-
-    public static final int DEFAULT_SEARCH_SIZE = 500;
-
     public static final int HTTP_PORT = LogInit.getInt("HTTP_PORT");
 
     public static final int WEB_SOCKET_HTTP_PORT = LogInit.getInt("WEB_SOCKET_HTTP_PORT");
 
     /**************************es字段需要跟mapping一样***********************/
 
-    public static final String APP_NAME_STR = "appName";
+	/** ***********************ACTIVITY字段需要跟mapping一样********************** */
+	public static final String URL = "url";
 
-    public static final String APP_VERSION_STR = "appVersion";
+    public static final String PICTURE = "picture";
 
-    public static final String PHASE_STR = "phase";
+    public static final String TITLE = "title";
 
-    public static final String ENV_STR = "env";
+    public static final String DESC = "desc";
 
-    public static final String CLASS_NAME_STR = "className";
+    public static final String TIME = "time";
 
-    public static final String CONTAINER_ID_STR = "containerID";
+    public static final String LOCATION = "location";
 
-    public static final String METHOD_NAME_STR = "methodName";
 
-    public static final String LINE_NUM_STR = "lineNum";
 
-    public static final String THREAD_NAME_STR = "threadName";
 
-    public static final String MESSAGE_STR = "message";
+	/** ***********************DETAIL字段需要跟mapping一样********************** */
 
-    public static final String LOG_PATH_STR = "logPath";
 
-    public static final String STORE_LOG_TIME_STR = "storeLogTime";
+    public static final String DETAIL_TITLE = "title";
+
+    public static final String DETAIL_TIME = "time";
+
+    public static final String DETAIL_LOCATION = "location";
+
+    public static final String DETAIL_EXPENSE = "expense";
+
+    public static final String DETAIL_TYPE = "type";
+
+    public static final String DETAIL_INITIATOR = "initiator";
+
+	public static final String DETAIL_INITIATOR_URL = "initiatorUrl";
+
+    public static final String DETAIL_DESC = "desc";
+
+
+
+
+
+
+
 
     public static final String HIGH_LIGHTER_PRE="<a class=\"highlighterKeyWord\">";
 

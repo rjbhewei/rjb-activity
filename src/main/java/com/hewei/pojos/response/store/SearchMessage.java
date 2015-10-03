@@ -3,14 +3,14 @@ package com.hewei.pojos.response.store;
 import java.util.Date;
 
 /**
- * 
+ *
  * @author hewei
- * 
+ *
  * @date 2015/9/8  21:30
  *
  * @version 5.0
  *
- * @desc 
+ * @desc
  *
  */
 public class SearchMessage {

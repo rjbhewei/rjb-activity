@@ -20,9 +20,14 @@ import com.hewei.pojos.response.SearchResult;
 public class EsConnector {
 
     public static SearchResult urlSearch(SearchPojo pojo) {
-        if ("search".equals(pojo.getUrlType())) {
-            return ESUtils.search(pojo);
-        }
-        throw new LogException(ESConstants.URL_TYPE_ERROR);
+		if (ESConstants.ACTIVITY.equals(pojo.getUrlType())) {
+			return ESUtils.search(pojo);
+		}
+
+		if (ESConstants.ACTIVITY_DETAILS.equals(pojo.getUrlType())) {
+			return ESUtils.search(pojo);
+		}
+
+		throw new LogException(ESConstants.URL_TYPE_ERROR);
     }
 }
