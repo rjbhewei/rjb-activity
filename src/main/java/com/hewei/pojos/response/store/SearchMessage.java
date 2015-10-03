@@ -27,6 +27,8 @@ public class SearchMessage {
 
 	private String initiatorUrl;//发起人
 
+	private String desc;
+
 	public String getTitle() {
 		return title;
 	}
@@ -81,5 +83,13 @@ public class SearchMessage {
 
 	public void setInitiatorUrl(String initiatorUrl) {
 		this.initiatorUrl = initiatorUrl;
+	}
+
+	public String getDesc() {
+		return desc;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
 	}
 }

@@ -119,7 +119,7 @@ public class ESUtils extends ES {
 					ESConstants.DETAIL_EXPENSE,
 					ESConstants.DETAIL_TYPE,
 					ESConstants.DETAIL_INITIATOR,
-					ESConstants.DETAIL_INITIATOR_URL,
+					ESConstants.DETAIL_INITIATOR_URL
 //					ESConstants.DETAIL_DESC
 			};
 		}
