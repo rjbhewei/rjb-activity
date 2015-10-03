@@ -7,6 +7,7 @@ import com.hewei.pojos.request.SearchPojo;
 import com.hewei.pojos.response.SearchResultImpl;
 import com.hewei.pojos.response.store.SearchMessage;
 import com.hewei.utils.JsonUtils;
+import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.text.Text;
@@ -16,6 +17,8 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHitField;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.highlight.HighlightField;
+import org.elasticsearch.search.sort.SortOrder;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,13 +50,9 @@ public class ESUtils extends ES {
 
 		SearchRequestBuilder builder = client().prepareSearch(ESConstants.ES_INDEX_NAME).setTypes(pojo.getUrlType()).setFrom(searchPage.getStart()).setSize(searchPage.getSize()).setQuery(query).addFields(fields);
 
-//        if (StringUtils.isNotEmpty(pojo.getSearch())) {
-//            builder.addHighlightedField(ESConstants.MESSAGE_STR).setHighlighterPreTags(ESConstants.HIGH_LIGHTER_PRE).setHighlighterPostTags(ESConstants.HIGH_LIGHTER_POST).setHighlighterNumOfFragments(0);
-//        } else {
-//            builder.addField(ESConstants.MESSAGE_STR).addSort(ESConstants.STORE_LOG_TIME_STR, SortOrder.DESC);
-//        }
+		extensionBuilder(pojo, builder);
 
-        logger.info(builder.toString());
+		logger.info(builder.toString());
 
         SearchResponse response = builder.get();
 
@@ -88,13 +87,13 @@ public class ESUtils extends ES {
 
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
-//        if (StringUtils.isNotEmpty(pojo.getSearch())) {
-//            boolQueryBuilder.must(QueryBuilders.queryStringQuery(pojo.getSearch()).field(ESConstants.MESSAGE_STR));
-//        }
-//
-//        if (pojo.getStartTime() > 0 && pojo.getEndTime() > 0) {
-//            boolQueryBuilder.must(QueryBuilders.rangeQuery(ESConstants.STORE_LOG_TIME_STR).gte(new DateTime(pojo.getStartTime()).toString(ESConstants.ES_DATE_FORMAT)).lte(new DateTime(pojo.getEndTime()).toString(ESConstants.ES_DATE_FORMAT)));
-//        }
+        if (StringUtils.isNotEmpty(pojo.getSearch())) {
+            boolQueryBuilder.must(QueryBuilders.queryStringQuery(pojo.getSearch()).field(ESConstants.DETAIL_DESC));
+        }
+
+        if (pojo.getStartTime() > 0 && pojo.getEndTime() > 0) {
+            boolQueryBuilder.must(QueryBuilders.rangeQuery(ESConstants.DETAIL_TIME).gte(new DateTime(pojo.getStartTime()).toString(ESConstants.ES_DATE_FORMAT)).lte(new DateTime(pojo.getEndTime()).toString(ESConstants.ES_DATE_FORMAT)));
+        }
 
         return boolQueryBuilder;
     }
@@ -121,11 +120,23 @@ public class ESUtils extends ES {
 					ESConstants.DETAIL_TYPE,
 					ESConstants.DETAIL_INITIATOR,
 					ESConstants.DETAIL_INITIATOR_URL,
-					ESConstants.DETAIL_DESC
+//					ESConstants.DETAIL_DESC
 			};
 		}
 
 		return new String[0];
+	}
+
+	static void extensionBuilder(SearchPojo pojo, SearchRequestBuilder builder) {
+		if (ESConstants.ACTIVITY.equals(pojo.getUrlType())) {
+			return;
+		}
+
+		if (StringUtils.isNotEmpty(pojo.getSearch())) {
+			builder.addHighlightedField(ESConstants.DETAIL_DESC).setHighlighterPreTags(ESConstants.HIGH_LIGHTER_PRE).setHighlighterPostTags(ESConstants.HIGH_LIGHTER_POST).setHighlighterNumOfFragments(0);
+		} else {
+			builder.addField(ESConstants.DETAIL_DESC).addSort(ESConstants.DETAIL_TIME, SortOrder.DESC);
+		}
 	}
 
 }
