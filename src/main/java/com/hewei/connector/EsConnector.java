@@ -23,9 +23,6 @@ public class EsConnector {
         if ("search".equals(pojo.getUrlType())) {
             return ESUtils.search(pojo);
         }
-        if ("prefixSearch".equals(pojo.getUrlType())) {
-            return ESUtils.prefixSearch(pojo);
-        }
         throw new LogException(ESConstants.URL_TYPE_ERROR);
     }
 }

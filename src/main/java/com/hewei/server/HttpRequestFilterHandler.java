@@ -46,7 +46,7 @@ public class HttpRequestFilterHandler extends SimpleChannelInboundHandler<HttpRe
 			throw new LogException(ESConstants.URL_EMPTY);
 		}
 
-		if (!"/logCenter".equals(request.uri())) {
+		if (!"/activity".equals(request.uri())) {
 			throw new LogException(ESConstants.URL_ERROR);
 		}
 

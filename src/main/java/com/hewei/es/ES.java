@@ -5,12 +5,8 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import static com.hewei.constants.ESConstants.ES_CLUSTER_NAME;
-import static com.hewei.constants.ESConstants.ES_IP;
-import static com.hewei.constants.ESConstants.ES_PORT;
+import static com.hewei.constants.ESConstants.*;
 
 /**
  * 
@@ -24,8 +20,6 @@ import static com.hewei.constants.ESConstants.ES_PORT;
  *
  */
 public class ES {
-
-    public static final Logger LOG = LoggerFactory.getLogger(ES.class);
 
     private static class HEWEI {
 

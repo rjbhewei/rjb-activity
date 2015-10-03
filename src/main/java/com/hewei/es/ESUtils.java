@@ -9,9 +9,7 @@ import com.hewei.exception.LogException;
 import com.hewei.pojos.SearchPage;
 import com.hewei.pojos.TimeRanger;
 import com.hewei.pojos.request.SearchPojo;
-import com.hewei.pojos.response.PrefixSearchResultImpl;
 import com.hewei.pojos.response.SearchResultImpl;
-import com.hewei.pojos.response.store.PrefixSearchMessage;
 import com.hewei.pojos.response.store.SearchMessage;
 import com.hewei.utils.JsonUtils;
 import org.apache.commons.lang.StringUtils;
@@ -24,18 +22,15 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHitField;
 import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
-import org.elasticsearch.search.aggregations.Aggregation;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.bucket.terms.InternalTerms;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortOrder;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -121,54 +116,6 @@ public class ESUtils extends ES {
         return new SearchResultImpl(searchHits.getTotalHits(), response.getTook().secondsFrac(), searchErr, searchPage.getPage(), searchPage.getSize(), list);
     }
 
-    public static PrefixSearchResultImpl prefixSearch(SearchPojo pojo) {
-
-        String prefix = pojo.getPrefixType();
-
-        if (StringUtils.isEmpty(prefix)) {
-            return new PrefixSearchResultImpl();
-        }
-
-        String preValue = getAndClearPrefixSearchValue(pojo, prefix);
-
-        if (StringUtils.isEmpty(preValue)) {
-            return new PrefixSearchResultImpl();
-        }
-
-        TimeRanger timeRanger = indices(pojo);
-
-        BoolQueryBuilder boolQueryBuilder = query(timeRanger.wrap(pojo));
-
-        boolQueryBuilder.must(QueryBuilders.prefixQuery(prefix, preValue));
-
-        String query = boolQueryBuilder.buildAsBytes().toUtf8();
-
-        AbstractAggregationBuilder aggregationBuilder = AggregationBuilders.terms("prefixAgg").field(prefix).size(10).shardSize(0);
-
-        SearchRequestBuilder builder = client().prepareSearch(timeRanger.getIndices()).setTypes(Strings.EMPTY_ARRAY).setFrom(0).setSize(0).addAggregation(aggregationBuilder).setQuery(query);
-
-        logger.info(builder.toString());
-
-        SearchResponse response = builder.get();
-
-        logger.info(response.toString());
-        logger.info("TotalHits:{}", response.getHits().getTotalHits());
-        logger.info("TookInMillis:{}", response.getTookInMillis());
-
-        List<PrefixSearchMessage> list = new ArrayList<>();
-
-        for (Map.Entry<String, Aggregation> entry : response.getAggregations().getAsMap().entrySet()) {
-            InternalTerms agg = (InternalTerms) entry.getValue();
-            for (Terms.Bucket bucket : agg.getBuckets()) {
-                LOG.info("搜索到的信息:{}", bucket.getKey());
-                LOG.info("搜索到的信息:{}", bucket.getDocCount());
-                list.add(new PrefixSearchMessage(bucket.getKey(), bucket.getDocCount()));
-            }
-        }
-        return new PrefixSearchResultImpl(response.getHits().getTotalHits(), response.getTook().secondsFrac(), list);
-
-    }
-
     static BoolQueryBuilder query(SearchPojo pojo){
 
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -249,45 +196,5 @@ public class ESUtils extends ES {
                 ESConstants.LOG_PATH_STR, ESConstants.CLASS_NAME_STR, ESConstants.METHOD_NAME_STR,
                 ESConstants.LINE_NUM_STR, ESConstants.THREAD_NAME_STR, ESConstants.STORE_LOG_TIME_STR};
     }
-
-    static String getAndClearPrefixSearchValue(SearchPojo pojo, String prefix) {
-        switch (prefix) {
-            case ESConstants.APP_NAME_STR:
-                String appName = pojo.getAppName();
-                pojo.setAppName("");
-                return appName;
-            case ESConstants.APP_VERSION_STR:
-                String appVersion = pojo.getAppVersion();
-                pojo.setAppVersion("");
-                return appVersion;
-            case ESConstants.PHASE_STR:
-                String phase = pojo.getPhase();
-                pojo.setPhase("");
-                return phase;
-            case ESConstants.ENV_STR:
-                String env = pojo.getEnv();
-                pojo.setEnv("");
-                return env;
-            case ESConstants.CLASS_NAME_STR:
-                String className = pojo.getClassName();
-                pojo.setClassName("");
-                return className;
-            case ESConstants.METHOD_NAME_STR:
-                String methodName = pojo.getMethodName();
-                pojo.setMethodName("");
-                return methodName;
-            case ESConstants.THREAD_NAME_STR:
-                String threadName = pojo.getThreadName();
-                pojo.setThreadName("");
-                return threadName;
-            default:
-                return "";
-        }
-
-    }
-
-
-
-
 
 }
