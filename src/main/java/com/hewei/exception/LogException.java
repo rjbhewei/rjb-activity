@@ -14,6 +14,7 @@ public class LogException extends RuntimeException {
 
 	private String errDesc;
 
+
 	public LogException(String errDesc) {
 		super(errDesc);
 		this.errDesc = errDesc;
