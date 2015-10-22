@@ -27,4 +27,6 @@ public class SpiderConstants {
 
     public static final int SPIDER_SLEEP_TIME = CommonInit.getInt("SPIDER_SLEEP_TIME");
 
+    public static final int SPIDER_THREAD = CommonInit.getInt("SPIDER_THREAD");
+
 }

@@ -25,7 +25,7 @@ public class SpiderRunner {
         spider.addUrl(originalUrl());
         spider.setScheduler(new JedisScheduler(JedisUtils.newPool()));
         spider.setExitWhenComplete(false);
-        spider.thread(1);
+        spider.thread(SpiderConstants.SPIDER_THREAD);
         spider.addPipeline(new SpiderPipeline());
         spider.run();
     }
