@@ -41,17 +41,17 @@ public class HbaseUtils {
         }
     }
 
-    public static void createTable(TableName tableName, String[] columnFamilys) throws Exception {
+    public static void createTable(TableName tableName, String... columnFamilys) throws Exception {
         Admin admin = connection.getAdmin();
         if (admin.tableExists(tableName)) {
-            logger.info("表已经存在");
+            logger.info("hbase table is exist");
         } else {
             HTableDescriptor tableDesc = new HTableDescriptor(tableName);
             for (String columnFamily : columnFamilys) {
                 tableDesc.addFamily(new HColumnDescriptor(columnFamily));
             }
             admin.createTable(tableDesc);
-            logger.info("创建表成功");
+            logger.info("create table success");
         }
     }
 
@@ -60,7 +60,7 @@ public class HbaseUtils {
         Put put = new Put(Bytes.toBytes(row));
         put.addColumn(Bytes.toBytes(columnFamily), Bytes.toBytes(column), Bytes.toBytes(value));// 参数出分别：列族、列、值
         table.put(put);
-        logger.info("添加行成功");
+        logger.info("add row success");
     }
 
 }
