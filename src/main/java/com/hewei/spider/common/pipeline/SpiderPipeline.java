@@ -8,6 +8,7 @@ import us.codecraft.webmagic.ResultItems;
 import us.codecraft.webmagic.Task;
 import us.codecraft.webmagic.pipeline.Pipeline;
 
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -29,13 +30,13 @@ public class SpiderPipeline implements Pipeline {
     public void process(ResultItems resultItems, Task task) {
         Map<String, Object> map = resultItems.getAll();
         String url = (String) map.get(SpiderConstants.SPIDER_URL);
-        String html = (String) map.get(SpiderConstants.SPIDER_HTML);
+        String html = (String) map.get(SpiderConstants.SPIDER_HBASE_COLUMN_HTML);
         try {
-            HbaseUtils.createTable(SpiderConstants.SPIDER_TABLE, SpiderConstants.SPIDER_COLUMN_FAMILY);
-            HbaseUtils.addRow(SpiderConstants.SPIDER_TABLE, url, SpiderConstants.SPIDER_COLUMN_FAMILY, SpiderConstants.SPIDER_HTML, html);
-        } catch (Exception e) {
+            HbaseUtils.createTable(SpiderConstants.SPIDER_HBASE_TABLE, SpiderConstants.SPIDER_HBASE_COLUMN_FAMILY);
+            HbaseUtils.addRow(SpiderConstants.SPIDER_HBASE_TABLE, url, SpiderConstants.SPIDER_HBASE_COLUMN_FAMILY, SpiderConstants.SPIDER_HBASE_COLUMN_HTML, html);
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        logger.info("-----");
+        logger.info("SpiderPipeline url:{}", url);
     }
 }

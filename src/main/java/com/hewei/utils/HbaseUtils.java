@@ -41,26 +41,25 @@ public class HbaseUtils {
         }
     }
 
-    public static void createTable(TableName tableName, String... columnFamilys) throws Exception {
+    public static void createTable(TableName tableName, String... columnFamilys) throws IOException {
+        String table = new String(tableName.getName());
         Admin admin = connection.getAdmin();
         if (admin.tableExists(tableName)) {
-            logger.info("hbase table is exist");
+            logger.info("hbase table :{} is exist", table);
         } else {
             HTableDescriptor tableDesc = new HTableDescriptor(tableName);
             for (String columnFamily : columnFamilys) {
                 tableDesc.addFamily(new HColumnDescriptor(columnFamily));
             }
             admin.createTable(tableDesc);
-            logger.info("create table success");
+            logger.info("create table :{} success", table);
         }
     }
 
-    public static void addRow(TableName tableName, String row, String columnFamily, String column, String value) throws Exception {
+    public static void addRow(TableName tableName, String row, String columnFamily, String column, String value) throws IOException {
         Table table = connection.getTable(tableName);
-        Put put = new Put(Bytes.toBytes(row));
-        put.addColumn(Bytes.toBytes(columnFamily), Bytes.toBytes(column), Bytes.toBytes(value));// 参数出分别：列族、列、值
-        table.put(put);
-        logger.info("add row success");
+        table.put(new Put(Bytes.toBytes(row)).addColumn(Bytes.toBytes(columnFamily), Bytes.toBytes(column), Bytes.toBytes(value)));
+        logger.info("table:{} ,add row:{} success", new String(tableName.getName()), row);
     }
 
 }

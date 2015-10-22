@@ -28,11 +28,11 @@ public class SpiderProcessor implements PageProcessor {
 
         String url = page.getUrl().get();
 
-        logger.info("process url:{}", url);
+        logger.info("SpiderProcessor url:{}", url);
 
         page.putField(SpiderConstants.SPIDER_URL, url);
 
-        page.putField(SpiderConstants.SPIDER_HTML, page.getHtml());
+        page.putField(SpiderConstants.SPIDER_HBASE_COLUMN_HTML, page.getHtml());
 
     }
 
