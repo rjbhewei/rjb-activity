@@ -45,12 +45,12 @@ public class CsdnProcessor implements PageProcessor {
 
         logger.info("process url:{}", url);
 
-        if (!url.startsWith(CsdnConstants.ORIGINAL_URL.substring(0, CsdnConstants.ORIGINAL_URL.lastIndexOf("/home")))) {
+        if (!url.startsWith(CsdnConstants.CSDN_ORIGINAL_URL.substring(0, CsdnConstants.CSDN_ORIGINAL_URL.lastIndexOf("/home")))) {
             logger.info("external csdn url:{}", url);
             return;
         }
 
-        if (CsdnConstants.ORIGINAL_URL.equals(url)) {
+        if (CsdnConstants.CSDN_ORIGINAL_URL.equals(url)) {
             pagesDeal(page);
             activityDeal(page);
             return;
@@ -130,7 +130,7 @@ public class CsdnProcessor implements PageProcessor {
                 continue;
             }
 
-            String newUrl = CsdnConstants.ORIGINAL_URL + "?&page=" + message;
+            String newUrl = CsdnConstants.CSDN_ORIGINAL_URL + "?&page=" + message;
             logger.info("newUrl:{}", newUrl);
             pageUrlSet.add(newUrl);
         }

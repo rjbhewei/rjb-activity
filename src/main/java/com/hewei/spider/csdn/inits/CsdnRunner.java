@@ -33,6 +33,6 @@ public class CsdnRunner {
     }
 
     private static String[] originalUrl() {
-        return new String[]{CsdnConstants.ORIGINAL_URL};
+        return new String[]{CsdnConstants.CSDN_ORIGINAL_URL};
     }
 }

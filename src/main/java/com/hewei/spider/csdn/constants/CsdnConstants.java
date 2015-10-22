@@ -1,6 +1,6 @@
 package com.hewei.spider.csdn.constants;
 
-import com.hewei.spider.csdn.inits.CsdnInit;
+import com.hewei.common.inits.CommonInit;
 
 /**
  * 
@@ -21,9 +21,9 @@ public class CsdnConstants {
 
     public static final String ACTIVITY_DETAILS = "activityDetails";
 
-    /**************************************************************************/
+    /** ********************************************************************** */
 
-    public static final String ORIGINAL_URL = CsdnInit.getString("ORIGINAL_URL");
+    public static final String CSDN_ORIGINAL_URL = CommonInit.getString("CSDN_ORIGINAL_URL");
 
 
 }
