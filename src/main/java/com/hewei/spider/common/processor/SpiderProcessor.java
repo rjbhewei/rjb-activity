@@ -8,6 +8,9 @@ import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.processor.PageProcessor;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 
  * @author hewei
@@ -32,7 +35,13 @@ public class SpiderProcessor implements PageProcessor {
 
         page.putField(SpiderConstants.SPIDER_URL, url);
 
-        page.putField(SpiderConstants.SPIDER_HBASE_COLUMN_HTML, page.getHtml());
+        page.putField(SpiderConstants.SPIDER_HBASE_COLUMN_HTML, page.getHtml().get());
+
+        List<String> news = page.getHtml().links().all();
+
+        page.addTargetRequests(news);
+
+        logger.info("SpiderProcessor new:{}", Arrays.toString(news.toArray(new String[news.size()])));
 
     }
 
