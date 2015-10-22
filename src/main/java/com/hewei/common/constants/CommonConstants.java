@@ -37,4 +37,8 @@ public class CommonConstants {
 
     public static final String ES_IP = CommonInit.getString("ES_IP");
 
+    public static final String HBASE_ZOOKEEPER_QUORUM = CommonInit.getString("HBASE_ZOOKEEPER_QUORUM");
+
+    public static final int HBASE_ZOOKEEPER_PROPERTY_CLIENTPORT = CommonInit.getInt("HBASE_ZOOKEEPER_PROPERTY_CLIENTPORT");
+
 }

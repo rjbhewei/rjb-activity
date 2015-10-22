@@ -1,4 +1,4 @@
-package com.hewei.common.utils;
+package com.hewei.utils;
 
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;

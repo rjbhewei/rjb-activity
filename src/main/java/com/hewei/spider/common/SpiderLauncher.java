@@ -1,6 +1,6 @@
-package com.hewei.spider.csdn;
+package com.hewei.spider.common;
 
-import com.hewei.spider.csdn.inits.CsdnRunner;
+import com.hewei.spider.common.inits.SpiderRunner;
 
 /**
  * 
@@ -13,12 +13,12 @@ import com.hewei.spider.csdn.inits.CsdnRunner;
  * @desc 
  *
  */
-public class CsdnLauncher {
+public class SpiderLauncher {
     public static void main(String[] args) {
         new Thread() {
             @Override
             public void run() {
-                CsdnRunner.start();
+                SpiderRunner.start();
             }
         }.start();
     }

@@ -1,4 +1,4 @@
-package com.hewei.spider.csdn.pojos;
+package com.hewei.spider.common.pojos;
 
 import com.hewei.common.pojos.BaseEsPojo;
 

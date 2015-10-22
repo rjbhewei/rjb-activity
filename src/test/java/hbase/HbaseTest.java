@@ -67,7 +67,7 @@ public class HbaseTest {
     public static void addRow(TableName tableName, String row, String columnFamily, String column, String value) throws Exception {
         Table table = connection.getTable(tableName);
         Put put = new Put(Bytes.toBytes(row));
-        put.add(Bytes.toBytes(columnFamily), Bytes.toBytes(column), Bytes.toBytes(value));// 参数出分别：列族、列、值
+        put.addColumn(Bytes.toBytes(columnFamily), Bytes.toBytes(column), Bytes.toBytes(value));// 参数出分别：列族、列、值
         table.put(put);
         logger.info("添加行成功");
     }
