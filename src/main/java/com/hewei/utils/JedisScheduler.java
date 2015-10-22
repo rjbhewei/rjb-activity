@@ -1,4 +1,4 @@
-package com.hewei.spider.csdn.utils;
+package com.hewei.utils;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.codec.digest.DigestUtils;

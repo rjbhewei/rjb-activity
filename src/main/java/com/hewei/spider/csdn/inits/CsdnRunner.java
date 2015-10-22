@@ -2,10 +2,10 @@ package com.hewei.spider.csdn.inits;
 
 import com.hewei.common.utils.EsUtils;
 import com.hewei.common.utils.JedisUtils;
-import com.hewei.spider.csdn.utils.JedisScheduler;
 import com.hewei.spider.csdn.constants.CsdnConstants;
 import com.hewei.spider.csdn.pipeline.CsdnPipeline;
 import com.hewei.spider.csdn.processor.CsdnProcessor;
+import com.hewei.utils.JedisScheduler;
 import us.codecraft.webmagic.Spider;
 
 /**
